@@ -16,3 +16,6 @@ yarn-error.log*
 
 # Node modules (just in case they run local tools)
 node_modules/
+
+.vercel
+.env*

@@ -1,72 +1,145 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Assisterly — Caregiver Dashboard Prototype</title>
-  <meta name="description" content="A clinical-precision dashboard prototype for Assisterly, connecting families with background-verified caregivers.">
+  <meta name="description"
+    content="A clinical-precision dashboard prototype for Assisterly, connecting families with background-verified caregivers.">
   <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
 </head>
+
 <body>
 
   <!-- 1. Header Section -->
   <header>
     <div class="container">
       <div class="header-branding">
-        <!-- SVG Heartbeat/Pulse Logo -->
-        <svg class="header-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <!-- SVG Heartbeat/Pulse Logo (Animated) -->
+        <svg class="header-logo animate-heartbeat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
           <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
         </svg>
         <div class="header-title-area">
           <h1>Assisterly</h1>
-          <p>Trusted hands, close to home</p>
+          <p>Trusted hands, close to home <span class="typing-cursor"></span></p>
         </div>
       </div>
-      <div class="header-student-badge">
-        <span class="student-name">Varun</span>
-        <span class="student-reg">23IT721</span>
+      <div class="header-actions">
+        <!-- Live Clock Display (S.No 9) -->
+        <div class="live-clock-badge" id="live-clock-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          <span id="live-clock">Loading Time...</span>
+        </div>
+        <!-- Theme Toggle Switch (S.No 10) -->
+        <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle light/dark theme">
+          <svg class="theme-toggle-icon moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+          <svg class="theme-toggle-icon sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
+        <div class="header-student-badge">
+          <span class="student-name">Varun</span>
+          <span class="student-reg">23IT721</span>
+        </div>
       </div>
     </div>
   </header>
 
-  <!-- 2. Navigation Bar -->
+  <!-- 2. Navigation Bar (S.No 2) -->
   <nav>
     <div class="nav-container">
       <ul class="nav-links">
         <li><a href="#home">Home</a></li>
         <li><a href="#dashboard">Dashboard</a></li>
+        <li><a href="#features">Features</a></li>
         <li><a href="#services">Services</a></li>
         <li><a href="#reports">Reports</a></li>
-        <li><a href="#about">About</a></li>
         <li><a href="#contact">Contact</a></li>
+        <!-- Notification Panel Toggle (S.No 11) -->
+        <li class="notification-bell-container">
+          <button id="bell-btn" class="bell-btn" aria-label="Toggle notifications center">
+            <svg class="bell-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+            <span class="bell-badge" id="bell-badge">3</span>
+          </button>
+        </li>
         <li class="nav-logout"><a href="#logout">Logout</a></li>
       </ul>
     </div>
   </nav>
 
+  <!-- Notification Drawer Panel (S.No 11) -->
+  <div id="notification-panel" class="notification-panel">
+    <div class="notification-header">
+      <h3>Care Portal Notifications</h3>
+      <button id="close-notifications" class="close-notifications" aria-label="Close notifications">&times;</button>
+    </div>
+    <ul class="notification-list">
+      <li class="notification-item unread">
+        <p>🚨 <strong>Critical alert:</strong> Standby caregiver backup request active for Patient ID #8812.</p>
+        <span class="notification-time">10 mins ago</span>
+        <button class="dismiss-notification" aria-label="Dismiss alert">&times;</button>
+      </li>
+      <li class="notification-item unread">
+        <p>📢 <strong>System info:</strong> 12 new caregiver background verification logs have been processed successfully.</p>
+        <span class="notification-time">1 hour ago</span>
+        <button class="dismiss-notification" aria-label="Dismiss alert">&times;</button>
+      </li>
+      <li class="notification-item">
+        <p>✅ <strong>Billing update:</strong> Q2 billing cycles audit logs closed with zero active coordinator conflicts.</p>
+        <span class="notification-time">4 hours ago</span>
+        <button class="dismiss-notification" aria-label="Dismiss alert">&times;</button>
+      </li>
+    </ul>
+  </div>
+
   <main class="container">
 
-    <!-- 3. Welcome Section -->
-    <section id="home">
+    <!-- 3. Welcome Section (S.No 3) -->
+    <section id="home" class="animate-fade-in-up">
       <div class="welcome-grid">
         <div class="welcome-intro">
           <span class="eyebrow">Assisterly Platform</span>
           <h2>Compassionate Care Built on Trust</h2>
           <p>
-            Welcome to the Assisterly Care Coordinator portal. Assisterly connects families caring for paralyzed, bedridden, or elderly individuals with background-verified house-helps and certified caregivers. We reduce the cognitive and physical load on family members by supplying verified professional support directly to the home environment.
+            Welcome to the Assisterly Care Coordinator portal. Assisterly connects families caring for paralyzed,
+            bedridden, or elderly individuals with background-verified house-helps and certified caregivers. We reduce
+            the cognitive and physical load on family members by supplying verified professional support directly to the
+            home environment.
           </p>
           <p>
-            Use this dashboard terminal to monitor platform statistics, coordinate caregiver verification workflows, review updates, track shift modules, and manage active service registrations.
+            Use this dashboard terminal to monitor platform statistics, coordinate caregiver verification workflows,
+            review updates, track shift modules, and manage active service registrations.
           </p>
         </div>
         <div class="welcome-cards">
-          <div class="vision-mission-card">
+          <div class="vision-mission-card hover-lift">
             <h3>Our Vision</h3>
-            <p>To establish a dignified, secure, and compassionate care ecosystem in every neighborhood, making specialized home care accessible and stress-free for every family.</p>
+            <p>To establish a dignified, secure, and compassionate care ecosystem in every neighborhood, making
+              specialized home care accessible and stress-free for every family.</p>
           </div>
-          <div class="vision-mission-card">
+          <div class="vision-mission-card hover-lift">
             <h3>Our Mission</h3>
-            <p>To bridge the gap between families and professional helpers through clinical training, strict background verification, and seamless real-time shift coordination.</p>
+            <p>To bridge the gap between families and professional helpers through clinical training, strict background
+              verification, and seamless real-time shift coordination.</p>
           </div>
         </div>
       </div>
@@ -75,111 +148,162 @@
     <!-- Signature Divider 1 (After Welcome Section) -->
     <div class="pulse-divider-container">
       <svg class="pulse-line" viewBox="0 0 100 10" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0,5 L40,5 L43,2 L45,8 L48,1 L50,9 L52,4 L55,5 L100,5" fill="none" stroke="var(--color-sage)" stroke-width="0.75" />
+        <path d="M0,5 L40,5 L43,2 L45,8 L48,1 L50,9 L52,4 L55,5 L100,5" fill="none" stroke="var(--color-sage)"
+          stroke-width="0.75" />
       </svg>
     </div>
 
-    <!-- 4. Dashboard Statistics -->
-    <section id="dashboard">
+    <!-- 8. Image/Banner Slider Carousel (S.No 8) -->
+    <section class="slider-section animate-fade-in-up">
+      <div class="slider-container">
+        <!-- Slide 1 -->
+        <div class="slide active" style="background-image: url('slide1.png');">
+          <div class="slide-overlay">
+            <h3>Specialized Clinical Care Coordination</h3>
+            <p>Assisterly pairs certified nursing managers with households to build, customize, and oversee daily patient support routines.</p>
+          </div>
+        </div>
+        <!-- Slide 2 -->
+        <div class="slide" style="background-image: url('slide2.png');">
+          <div class="slide-overlay">
+            <h3>Rigorous Background Clearance Audits</h3>
+            <p>Every prospective assistant undergoes thorough criminal record history and biometric ID verification for peace of mind.</p>
+          </div>
+        </div>
+        <!-- Slide 3 -->
+        <div class="slide" style="background-image: url('slide3.png');">
+          <div class="slide-overlay">
+            <h3>Continuous Professional Skills Upgrades</h3>
+            <p>Active helps are updated with advanced patient handling certifications, medical hygiene, and emergency response operations.</p>
+          </div>
+        </div>
+      </div>
+      <!-- Slider Navigation Controls -->
+      <button class="slider-arrow slider-arrow-left" aria-label="Previous Slide">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+      <button class="slider-arrow slider-arrow-right" aria-label="Next Slide">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+      <!-- Indicator Dots -->
+      <div class="slider-dots"></div>
+    </section>
+
+    <!-- 4 & 5. Dashboard Statistics Grid (S.No 4, 5) -->
+    <section id="dashboard" class="animate-fade-in-up">
       <span class="eyebrow">Real-Time Metrics</span>
       <h2>System Vital Statistics</h2>
       <div class="stats-grid">
         <!-- Card 1 -->
-        <div class="stat-card">
+        <div class="stat-card hover-lift">
           <div class="stat-header">
             <span class="stat-category">Network</span>
           </div>
           <div>
-            <div class="stat-value">4,820</div>
+            <div class="stat-value" id="stat-total-users">0</div>
             <div class="stat-label">Total Users Registered</div>
           </div>
         </div>
         <!-- Card 2 -->
-        <div class="stat-card">
+        <div class="stat-card hover-lift">
           <div class="stat-header">
             <span class="stat-category">Network</span>
           </div>
           <div>
-            <div class="stat-value">1,248</div>
+            <div class="stat-value" id="stat-active-caregivers">0</div>
             <div class="stat-label">Active Caregivers</div>
           </div>
         </div>
         <!-- Card 3 -->
-        <div class="stat-card">
+        <div class="stat-card hover-lift">
           <div class="stat-header">
             <span class="stat-category">Finance</span>
           </div>
           <div>
-            <div class="stat-value">₹8.4L</div>
+            <div class="stat-value" id="stat-revenue">0</div>
             <div class="stat-label">Monthly Gross Revenue</div>
           </div>
         </div>
         <!-- Card 4 -->
-        <div class="stat-card">
+        <div class="stat-card hover-lift">
           <div class="stat-header">
             <span class="stat-category">Finance</span>
           </div>
           <div>
-            <div class="stat-value">3,120</div>
+            <div class="stat-value" id="stat-transactions">0</div>
             <div class="stat-label">Processed Transactions</div>
           </div>
         </div>
         <!-- Card 5 -->
-        <div class="stat-card">
+        <div class="stat-card hover-lift">
           <div class="stat-header">
             <span class="stat-category">Alerts</span>
           </div>
           <div>
-            <div class="stat-value">12</div>
+            <div class="stat-value" id="stat-alerts">0</div>
             <div class="stat-label">Active System Alerts</div>
           </div>
         </div>
         <!-- Card 6 -->
-        <div class="stat-card">
+        <div class="stat-card hover-lift">
           <div class="stat-header">
             <span class="stat-category">Alerts</span>
           </div>
           <div>
-            <div class="stat-value">07</div>
+            <div class="stat-value" id="stat-pending">0</div>
             <div class="stat-label">Pending Verifications</div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 5 & 6. Features & Services Section -->
-    <section id="services">
-      <div class="features-services-grid">
-        <!-- 5. Features Section (ul) -->
-        <div class="list-panel">
-          <span class="eyebrow">Platform Capabilities</span>
-          <h3>Key Features</h3>
-          <ul class="features-list">
-            <li><strong>Caregiver Verification:</strong> Dynamic background, qualification, and biometric security screening.</li>
-            <li><strong>Daily Care Logs:</strong> Digital records of medical schedules, dietary intake, and clinical progress logs.</li>
-            <li><strong>Shift Tracking:</strong> Precise real-time tracking of check-in and check-out timings for home helpers.</li>
-            <li><strong>Emergency Alerts:</strong> Instant panic-trigger system notifying primary contacts and local medical services.</li>
-            <li><strong>Secure Messaging:</strong> Encrypted communications between family members, caregivers, and administrative staff.</li>
-            <li><strong>Training Records:</strong> Log of specialized certification courses completed by care professionals.</li>
-          </ul>
-        </div>
-
-        <!-- 6. Services Section (ol) -->
-        <div class="list-panel">
-          <span class="eyebrow">What We Offer</span>
-          <h3>Our Services</h3>
-          <ol class="services-list">
-            <li><strong>Personal Caregiver Matching:</strong> Algorithms that pair patients with helpers suited to their clinical condition.</li>
-            <li><strong>Scheduled Home Visits:</strong> Flexible part-time or full-time caregiving schedules tailored to individual routines.</li>
-            <li><strong>24x7 Emergency Replacement:</strong> Guaranteed continuity of service through standby caregiver routing.</li>
-            <li><strong>Monthly Wellness Reports:</strong> Comprehensive health summary reports prepared by attending nursing supervisors.</li>
-            <li><strong>Onboarding & Professional Training:</strong> Dedicated skill upgrade courses in patient mobility, feeding, and hygiene.</li>
-          </ol>
-        </div>
+    <!-- 6. Features Section (S.No 6) -->
+    <section id="features" class="animate-fade-in-up">
+      <div class="list-panel hover-lift">
+        <span class="eyebrow">Platform Capabilities</span>
+        <h3>Key Features</h3>
+        <ul class="features-list">
+          <li><strong>Caregiver Verification:</strong> Dynamic background, qualification, and biometric security
+            screening.</li>
+          <li><strong>Daily Care Logs:</strong> Digital records of medical schedules, dietary intake, and clinical
+            progress logs.</li>
+          <li><strong>Shift Tracking:</strong> Precise real-time tracking of check-in and check-out timings for home
+            helpers.</li>
+          <li><strong>Emergency Alerts:</strong> Instant panic-trigger system notifying primary contacts and local
+            medical services.</li>
+          <li><strong>Secure Messaging:</strong> Encrypted communications between family members, caregivers, and
+            administrative staff.</li>
+          <li><strong>Training Records:</strong> Log of specialized certification courses completed by care
+            professionals.</li>
+        </ul>
       </div>
     </section>
 
-    <!-- 7. Latest Updates Marquee -->
+    <!-- 7. Services Section (S.No 7) -->
+    <section id="services" class="animate-fade-in-up">
+      <div class="list-panel hover-lift">
+        <span class="eyebrow">What We Offer</span>
+        <h3>Our Services</h3>
+        <ol class="services-list">
+          <li><strong>Personal Caregiver Matching:</strong> Algorithms that pair patients with helpers suited to their
+            clinical condition.</li>
+          <li><strong>Scheduled Home Visits:</strong> Flexible part-time or full-time caregiving schedules tailored to
+            individual routines.</li>
+          <li><strong>24x7 Emergency Replacement:</strong> Guaranteed continuity of service through standby caregiver
+            routing.</li>
+          <li><strong>Monthly Wellness Reports:</strong> Comprehensive health summary reports prepared by attending
+            nursing supervisors.</li>
+          <li><strong>Onboarding & Professional Training:</strong> Dedicated skill upgrade courses in patient
+            mobility, feeding, and hygiene.</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Latest Updates Marquee -->
     <div class="marquee-bar">
       <marquee class="marquee-content" behavior="scroll" direction="left">
         <span>🚨 Emergency response standby average reduced to 2.4 minutes system-wide.</span>
@@ -192,34 +316,36 @@
     <!-- Signature Divider 2 (Before Registration Form) -->
     <div class="pulse-divider-container">
       <svg class="pulse-line" viewBox="0 0 100 10" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0,5 L40,5 L43,2 L45,8 L48,1 L50,9 L52,4 L55,5 L100,5" fill="none" stroke="var(--color-sage)" stroke-width="0.75" />
+        <path d="M0,5 L40,5 L43,2 L45,8 L48,1 L50,9 L52,4 L55,5 L100,5" fill="none" stroke="var(--color-sage)"
+          stroke-width="0.75" />
       </svg>
     </div>
 
-    <!-- 8. Registration Form Section -->
-    <section id="register" class="registration-container">
+    <!-- 12 & 13. Registration Form with JS Validation (S.No 12, 13) -->
+    <section id="register" class="registration-container animate-fade-in-up">
       <div class="registration-card">
         <span class="eyebrow">Onboarding Portal</span>
         <h2>Caregiver Registration</h2>
-        <p style="margin-bottom: var(--spacing-md); font-size: 0.9rem; color: var(--color-sage);">Submit the registration details below to initialize a background screening and qualification verification profile.</p>
-        
-        <form action="#" method="POST" onsubmit="event.preventDefault(); alert('Clinical Registration Profile Submitted successfully. Verification workflow initiated.');">
+        <p style="margin-bottom: var(--spacing-md); font-size: 0.9rem; color: var(--color-sage);">Submit the
+          registration details below to initialize a background screening and qualification verification profile.</p>
+
+        <form action="#" method="POST" novalidate>
           <div class="form-grid">
             <div class="form-group">
               <label for="full-name">Full Name</label>
               <input type="text" id="full-name" name="fullName" required placeholder="e.g. Johnathan Doe">
             </div>
-            
+
             <div class="form-group">
               <label for="email">Email Address</label>
               <input type="email" id="email" name="email" required placeholder="e.g. john@assisterly.com">
             </div>
-            
+
             <div class="form-group">
               <label for="phone">Phone Number</label>
               <input type="tel" id="phone" name="phone" required placeholder="e.g. +91 98765 43210">
             </div>
-            
+
             <div class="form-group">
               <label for="password">Security Password</label>
               <input type="password" id="password" name="password" required placeholder="Min. 8 characters">
@@ -242,17 +368,18 @@
                 </label>
               </div>
             </div>
-            
+
             <div class="form-group">
               <label for="dob">Date of Birth</label>
               <input type="date" id="dob" name="dob" required>
             </div>
-            
+
             <div class="form-group full-width">
               <label for="address">Residential Address</label>
-              <textarea id="address" name="address" required placeholder="Provide house number, street name, city, state, and postal code..."></textarea>
+              <textarea id="address" name="address" required
+                placeholder="Provide house number, street name, city, state, and postal code..."></textarea>
             </div>
-            
+
             <div class="form-actions">
               <button type="reset" class="btn btn-reset">Reset Details</button>
               <button type="submit" class="btn btn-submit">Submit Registration</button>
@@ -263,7 +390,7 @@
     </section>
 
     <!-- 9. Application Modules Table Section -->
-    <section id="reports">
+    <section id="reports" class="animate-fade-in-up">
       <span class="eyebrow">Platform Architecture</span>
       <h2>System Core Modules</h2>
       <div class="table-container">
@@ -279,7 +406,8 @@
             <tr>
               <td class="module-id-cell">MOD-001</td>
               <td class="module-name-cell">Caregiver Verification</td>
-              <td>Vets qualification databases, processes biometric clearances, and conducts criminal background screenings.</td>
+              <td>Vets qualification databases, processes biometric clearances, and conducts criminal background
+                screenings.</td>
             </tr>
             <tr>
               <td class="module-id-cell">MOD-002</td>
@@ -289,47 +417,55 @@
             <tr>
               <td class="module-id-cell">MOD-003</td>
               <td class="module-name-cell">Daily Care Log</td>
-              <td>Enables real-time entry and tracking of patient clinical vitals, medication delivery, and activity schedules.</td>
+              <td>Enables real-time entry and tracking of patient clinical vitals, medication delivery, and activity
+                schedules.</td>
             </tr>
             <tr>
               <td class="module-id-cell">MOD-004</td>
               <td class="module-name-cell">Emergency Alerts</td>
-              <td>Handles rapid panic notifications, broadcasting high-priority location alerts to emergency centers and families.</td>
+              <td>Handles rapid panic notifications, broadcasting high-priority location alerts to emergency centers and
+                families.</td>
             </tr>
             <tr>
               <td class="module-id-cell">MOD-005</td>
               <td class="module-name-cell">Billing & Payments</td>
-              <td>Supports patient billing, insurance claims calculation, transactions audit logging, and caregiver payout runs.</td>
+              <td>Supports patient billing, insurance claims calculation, transactions audit logging, and caregiver
+                payout runs.</td>
             </tr>
             <tr>
               <td class="module-id-cell">MOD-006</td>
               <td class="module-name-cell">Reports & Analytics</td>
-              <td>Aggregates platform performance statistics, caregiver response logs, and generates patient clinical history PDF exports.</td>
+              <td>Aggregates platform performance statistics, caregiver response logs, and generates patient clinical
+                history PDF exports.</td>
             </tr>
           </tbody>
         </table>
       </div>
     </section>
 
-    <!-- 10. About Section -->
-    <section id="about">
-      <div class="about-panel">
+    <!-- About Section -->
+    <section id="about" class="animate-fade-in-up">
+      <div class="about-panel hover-lift">
         <span class="eyebrow">About the Platform</span>
         <p>
-          "Assisterly was established to address the critical gaps in elder and paralyzed care services. By combining human empathy with clinical rigor, our application provides families with a secure, real-time terminal to manage, verify, and coordinate caregiver resources, ensuring that home care maintains the same precision and safety as an in-patient facility."
+          "Assisterly was established to address the critical gaps in elder and paralyzed care services. By combining
+          human empathy with clinical rigor, our application provides families with a secure, real-time terminal to
+          manage, verify, and coordinate caregiver resources, ensuring that home care maintains the same precision and
+          safety as an in-patient facility."
         </p>
       </div>
     </section>
 
-    <!-- 11. Contact Information Section -->
-    <section id="contact">
+    <!-- 17. Contact Information Section (S.No 17) -->
+    <section id="contact" class="animate-fade-in-up">
       <span class="eyebrow">Get in Touch</span>
       <h2>Support Contacts</h2>
       <div class="contact-grid">
         <!-- Card 1 -->
-        <div class="contact-card">
+        <div class="contact-card hover-lift">
           <!-- SVG Envelope -->
-          <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
             <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
             <polyline points="22,6 12,13 2,6" />
           </svg>
@@ -337,28 +473,32 @@
           <p><a href="mailto:support@assisterly.com">support@assisterly.com</a></p>
         </div>
         <!-- Card 2 -->
-        <div class="contact-card">
+        <div class="contact-card hover-lift">
           <!-- SVG Phone -->
-          <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+          <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path
+              d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
           </svg>
           <h3>Phone Support</h3>
           <p><a href="tel:+911800102123">+91 1800 102 123</a></p>
         </div>
         <!-- Card 3 -->
-        <div class="contact-card">
+        <div class="contact-card hover-lift">
           <!-- SVG Map Pin -->
-          <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
             <circle cx="12" cy="10" r="3" />
           </svg>
           <h3>Office Headquarters</h3>
-          <p>Care Hub Center, 42nd Clinical Avenue, Tech Park Road, Bengaluru, IN</p>
+          <p>DD Industrials, Coimbatore, Tamil Nadu, IN</p>
         </div>
         <!-- Card 4 -->
-        <div class="contact-card">
+        <div class="contact-card hover-lift">
           <!-- SVG Share -->
-          <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg class="contact-icon animate-spin-slow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
             <circle cx="18" cy="5" r="3" />
             <circle cx="6" cy="12" r="3" />
             <circle cx="18" cy="19" r="3" />
@@ -376,26 +516,52 @@
     </section>
 
     <!-- Logout / Session Status Section -->
-    <section id="logout">
-      <div class="about-panel" style="background-color: var(--color-sand); border: 1px solid rgba(198, 107, 61, 0.2);">
+    <section id="logout" class="animate-fade-in-up">
+      <div class="about-panel hover-lift" style="background-color: var(--color-sand); border: 1px solid rgba(198, 107, 61, 0.2);">
         <span class="eyebrow" style="color: var(--color-terracotta);">Clinical Terminal Session</span>
-        <h3 style="color: var(--color-pine); margin-bottom: 0.5rem; font-family: var(--font-display);">Session Manager</h3>
-        <p style="font-family: var(--font-body); font-style: normal; font-size: 0.95rem; margin-bottom: var(--spacing-sm);">
-          You are currently logged in as a care manager. This terminal coordinates sensitive clinical caregiver profiles. If you are leaving this workstation, secure the connection.
+        <h3 style="color: var(--color-pine); margin-bottom: 0.5rem; font-family: var(--font-display);">Session Manager
+        </h3>
+        <p
+          style="font-family: var(--font-body); font-style: normal; font-size: 0.95rem; margin-bottom: var(--spacing-sm);">
+          You are currently logged in as a care manager. This terminal coordinates sensitive clinical caregiver
+          profiles. If you are leaving this workstation, secure the connection.
         </p>
-        <button onclick="alert('Session secured. Redirecting to login simulation...'); window.location.reload();" class="btn btn-reset" style="border-color: var(--color-terracotta); color: var(--color-terracotta);">Secure Terminal & Logout</button>
+        <button onclick="alert('Session secured. Redirecting to login simulation...'); window.location.reload();"
+          class="btn btn-reset" style="border-color: var(--color-terracotta); color: var(--color-terracotta);">Secure
+          Terminal & Logout</button>
       </div>
     </section>
 
   </main>
 
-  <!-- 12. Footer Section -->
+  <!-- 18. Footer Section with social icons (S.No 18) -->
   <footer>
     <div class="container">
       <p>&copy; 2026 Assisterly. All rights reserved.</p>
       <p>Designed by Varun — 23IT721, Full Stack Development Laboratory</p>
+      
+      <!-- Footer Social Icons -->
+      <div style="margin-top: 1rem; display: flex; justify-content: center; gap: 1.25rem;">
+        <a href="https://linkedin.com" target="_blank" rel="noopener" aria-label="LinkedIn" style="color: var(--color-sage); transition: color var(--transition-speed);">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+        </a>
+        <a href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram" style="color: var(--color-sage); transition: color var(--transition-speed);">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </a>
+        <a href="https://twitter.com" target="_blank" rel="noopener" aria-label="Twitter" style="color: var(--color-sage); transition: color var(--transition-speed);">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg>
+        </a>
+      </div>
     </div>
   </footer>
 
+  <!-- 16. Floating Back to Top Button (S.No 16) -->
+  <button id="scroll-top" class="scroll-top-btn" aria-label="Scroll back to top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="18 15 12 9 6 15"></polyline>
+    </svg>
+  </button>
+
 </body>
+
 </html>
