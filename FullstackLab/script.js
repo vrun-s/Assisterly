@@ -286,9 +286,14 @@ function initFormValidation() {
   const nameInput = document.getElementById('full-name');
   const emailInput = document.getElementById('email');
   const phoneInput = document.getElementById('phone');
+  const ageInput = document.getElementById('age');
   const passwordInput = document.getElementById('password');
   const dobInput = document.getElementById('dob');
+  const timeInput = document.getElementById('preferred-time');
   const addressInput = document.getElementById('address');
+  const notesInput = document.getElementById('additional-notes');
+  const hiddenNotes = document.getElementById('additional-notes-hidden');
+  const cancelBtn = document.getElementById('btn-cancel');
 
   if (!form) return;
 
@@ -354,6 +359,21 @@ function initFormValidation() {
     return true;
   }
 
+  function validateAge() {
+    const val = ageInput.value.trim();
+    if (!val) {
+      showError(ageInput, 'Age is required.');
+      return false;
+    }
+    const age = parseInt(val, 10);
+    if (isNaN(age) || age < 18 || age > 75) {
+      showError(ageInput, 'Age must be between 18 and 75 years.');
+      return false;
+    }
+    showSuccess(ageInput);
+    return true;
+  }
+
   function validatePassword() {
     const val = passwordInput.value;
     if (val.length < 8) {
@@ -399,6 +419,16 @@ function initFormValidation() {
     return true;
   }
 
+  function validatePreferredTime() {
+    const val = timeInput.value.trim();
+    if (!val) {
+      showError(timeInput, 'Please select a preferred appointment time.');
+      return false;
+    }
+    showSuccess(timeInput);
+    return true;
+  }
+
   function validateAddress() {
     const val = addressInput.value.trim();
     if (val.length < 15) {
@@ -409,13 +439,45 @@ function initFormValidation() {
     return true;
   }
 
+  function validateNotes() {
+    if (notesInput && hiddenNotes) {
+      hiddenNotes.value = notesInput.textContent.trim();
+    }
+    // Notes are optional, but we sync them
+    if (notesInput) {
+      showSuccess(notesInput);
+    }
+    return true;
+  }
+
   // Real-time input checking
   nameInput?.addEventListener('input', validateName);
   emailInput?.addEventListener('input', validateEmail);
   phoneInput?.addEventListener('input', validatePhone);
+  ageInput?.addEventListener('input', validateAge);
   passwordInput?.addEventListener('input', validatePassword);
   dobInput?.addEventListener('change', validateDOB);
+  timeInput?.addEventListener('change', validatePreferredTime);
   addressInput?.addEventListener('input', validateAddress);
+
+  // Sync contenteditable on keyup and input
+  notesInput?.addEventListener('input', validateNotes);
+  notesInput?.addEventListener('blur', validateNotes);
+
+  // Cancel Button action (Req 17)
+  cancelBtn?.addEventListener('click', () => {
+    if (confirm('Are you sure you want to cancel registration? All entered details will be cleared.')) {
+      form.reset();
+      if (notesInput) notesInput.textContent = '';
+      if (hiddenNotes) hiddenNotes.value = '';
+      document.querySelectorAll('.form-group').forEach(group => {
+        group.classList.remove('has-error', 'has-success');
+        const err = group.querySelector('.error-message');
+        if (err) err.textContent = '';
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  });
 
   // Form submit intercept
   form.addEventListener('submit', (e) => {
@@ -424,13 +486,18 @@ function initFormValidation() {
     const isNameValid = validateName();
     const isEmailValid = validateEmail();
     const isPhoneValid = validatePhone();
+    const isAgeValid = validateAge();
     const isPasswordValid = validatePassword();
     const isDOBValid = validateDOB();
+    const isTimeValid = validatePreferredTime();
     const isAddressValid = validateAddress();
+    const isNotesValid = validateNotes();
 
-    if (isNameValid && isEmailValid && isPhoneValid && isPasswordValid && isDOBValid && isAddressValid) {
+    if (isNameValid && isEmailValid && isPhoneValid && isAgeValid && isPasswordValid && isDOBValid && isTimeValid && isAddressValid && isNotesValid) {
       alert('Registration Successful! Caregiver background screening workflow has been queued.');
       form.reset();
+      if (notesInput) notesInput.textContent = '';
+      if (hiddenNotes) hiddenNotes.value = '';
       
       // Clear visual status indicators
       document.querySelectorAll('.form-group').forEach(group => {
@@ -438,7 +505,7 @@ function initFormValidation() {
       });
     } else {
       // Focus on the first invalid field
-      const firstErr = document.querySelector('.form-group.has-error input, .form-group.has-error textarea');
+      const firstErr = document.querySelector('.form-group.has-error input, .form-group.has-error textarea, .form-group.has-error [contenteditable]');
       firstErr?.focus();
     }
   });
@@ -446,6 +513,8 @@ function initFormValidation() {
   // Clear validation visual markers on form reset
   form.addEventListener('reset', () => {
     setTimeout(() => {
+      if (notesInput) notesInput.textContent = '';
+      if (hiddenNotes) hiddenNotes.value = '';
       document.querySelectorAll('.form-group').forEach(group => {
         group.classList.remove('has-error', 'has-success');
         const err = group.querySelector('.error-message');
@@ -464,6 +533,20 @@ function initScrollSpy() {
 
   if (sections.length === 0 || navLinks.length === 0) return;
 
+  // Map section IDs to the actual visible links in the simplified navigation menu
+  const sectionToNavLink = {
+    'home': 'home',
+    'dashboard': 'home',
+    'features': 'services',
+    'services': 'services',
+    'register': 'register',
+    'reports': 'about',
+    'about': 'about',
+    'contact': 'contact',
+    'help': 'help',
+    'logout': 'help'
+  };
+
   function spy() {
     let currentSectionId = '';
     const scrollPos = window.scrollY + 150; // offset for sticky nav
@@ -481,10 +564,12 @@ function initScrollSpy() {
       currentSectionId = 'home';
     }
 
+    const mappedSectionId = sectionToNavLink[currentSectionId] || currentSectionId;
+
     navLinks.forEach(link => {
       link.classList.remove('active');
       const href = link.getAttribute('href');
-      if (href === `#${currentSectionId}` || (currentSectionId === '' && href === '#home')) {
+      if (href === `#${mappedSectionId}` || (mappedSectionId === '' && href === '#home')) {
         link.classList.add('active');
       }
     });

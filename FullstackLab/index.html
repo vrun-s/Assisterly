@@ -66,11 +66,11 @@
     <div class="nav-container">
       <ul class="nav-links">
         <li><a href="#home">Home</a></li>
-        <li><a href="#dashboard">Dashboard</a></li>
-        <li><a href="#features">Features</a></li>
+        <li><a href="#about">About</a></li>
         <li><a href="#services">Services</a></li>
-        <li><a href="#reports">Reports</a></li>
+        <li><a href="#register">Registration</a></li>
         <li><a href="#contact">Contact</a></li>
+        <li><a href="#help">Help</a></li>
         <!-- Notification Panel Toggle (S.No 11) -->
         <li class="notification-bell-container">
           <button id="bell-btn" class="bell-btn" aria-label="Toggle notifications center">
@@ -81,7 +81,6 @@
             <span class="bell-badge" id="bell-badge">3</span>
           </button>
         </li>
-        <li class="nav-logout"><a href="#logout">Logout</a></li>
       </ul>
     </div>
   </nav>
@@ -116,7 +115,7 @@
     <!-- 3. Welcome Section (S.No 3) -->
     <section id="home" class="animate-fade-in-up">
       <div class="welcome-grid">
-        <div class="welcome-intro">
+        <article class="welcome-intro">
           <span class="eyebrow">Assisterly Platform</span>
           <h2>Compassionate Care Built on Trust</h2>
           <p>
@@ -129,8 +128,8 @@
             Use this dashboard terminal to monitor platform statistics, coordinate caregiver verification workflows,
             review updates, track shift modules, and manage active service registrations.
           </p>
-        </div>
-        <div class="welcome-cards">
+        </article>
+        <aside class="welcome-cards">
           <div class="vision-mission-card hover-lift">
             <h3>Our Vision</h3>
             <p>To establish a dignified, secure, and compassionate care ecosystem in every neighborhood, making
@@ -141,7 +140,7 @@
             <p>To bridge the gap between families and professional helpers through clinical training, strict background
               verification, and seamless real-time shift coordination.</p>
           </div>
-        </div>
+        </aside>
       </div>
     </section>
 
@@ -343,12 +342,22 @@
 
             <div class="form-group">
               <label for="phone">Phone Number</label>
-              <input type="tel" id="phone" name="phone" required placeholder="e.g. +91 98765 43210">
+              <input type="tel" id="phone" name="phone" required pattern="[6-9][0-9]{9}" placeholder="e.g. 9876543210 (10 digits)">
             </div>
 
             <div class="form-group">
-              <label for="password">Security Password</label>
-              <input type="password" id="password" name="password" required placeholder="Min. 8 characters">
+              <label for="age">Age (Years)</label>
+              <input type="number" id="age" name="age" min="18" max="75" required placeholder="e.g. 28">
+            </div>
+
+            <div class="form-group">
+              <label for="dob">Date of Birth</label>
+              <input type="date" id="dob" name="dob" required>
+            </div>
+
+            <div class="form-group">
+              <label for="preferred-time">Preferred Appointment Time</label>
+              <input type="time" id="preferred-time" name="preferredTime" required>
             </div>
 
             <div class="form-group">
@@ -370,17 +379,50 @@
             </div>
 
             <div class="form-group">
-              <label for="dob">Date of Birth</label>
-              <input type="date" id="dob" name="dob" required>
+              <label for="password">Security Password</label>
+              <input type="password" id="password" name="password" required placeholder="Min. 8 characters">
             </div>
 
             <div class="form-group full-width">
               <label for="address">Residential Address</label>
-              <textarea id="address" name="address" required
+              <textarea id="address" name="address" required spellcheck="true"
                 placeholder="Provide house number, street name, city, state, and postal code..."></textarea>
             </div>
 
+            <div class="form-group full-width">
+              <label>Skills & Interests (Select multiple)</label>
+              <div class="checkbox-group-container">
+                <label class="checkbox-option">
+                  <input type="checkbox" name="skills" value="nursing">
+                  <span>Nursing Care</span>
+                </label>
+                <label class="checkbox-option">
+                  <input type="checkbox" name="skills" value="elderly">
+                  <span>Elderly Support</span>
+                </label>
+                <label class="checkbox-option">
+                  <input type="checkbox" name="skills" value="firstaid">
+                  <span>First Aid & CPR</span>
+                </label>
+                <label class="checkbox-option">
+                  <input type="checkbox" name="skills" value="cooking">
+                  <span>Meal Preparation</span>
+                </label>
+                <label class="checkbox-option">
+                  <input type="checkbox" name="skills" value="housekeeping">
+                  <span>Housekeeping</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group full-width">
+              <label for="additional-notes">Additional Comments & Notes (Editable Area)</label>
+              <div id="additional-notes" class="editable-notes-box" contenteditable="true" spellcheck="true" data-placeholder="Enter any additional medical requirements, caregiver preferences, or comments here..."></div>
+              <input type="hidden" id="additional-notes-hidden" name="additionalNotes">
+            </div>
+
             <div class="form-actions">
+              <button type="button" id="btn-cancel" class="btn btn-cancel">Cancel</button>
               <button type="reset" class="btn btn-reset">Reset Details</button>
               <button type="submit" class="btn btn-submit">Submit Registration</button>
             </div>
@@ -515,6 +557,38 @@
       </div>
     </section>
 
+    <!-- Help / FAQ Section (Req 3, 19) -->
+    <section id="help" class="animate-fade-in-up">
+      <span class="eyebrow">Support Center</span>
+      <h2>Frequently Asked Questions & Help</h2>
+      <div class="help-grid">
+        <div class="help-articles">
+          <article class="help-card hover-lift">
+            <h3>How do I complete the caregiver screening?</h3>
+            <p>Once you submit the caregiver registration form, you will receive an email scheduling your biometrics verification. Our team conducts an automated criminal history check and calls your professional references within 48 business hours.</p>
+          </article>
+          <article class="help-card hover-lift">
+            <h3>What qualifications are required to join?</h3>
+            <p>Attending helpers must hold a minimum level of clinical nursing orientation or home health care assistance certification from a recognized training bureau, alongside background clearance logs.</p>
+          </article>
+          <article class="help-card hover-lift">
+            <h3>How are emergency standbys managed?</h3>
+            <p>Our platform routing automatically redirects backup coordinators and tier-3 standby caregivers if an active care provider signals a check-in conflict or triggers a critical alert.</p>
+          </article>
+        </div>
+        <aside class="help-sidebar">
+          <div class="help-aside-card">
+            <h3>Need Direct Help?</h3>
+            <p>Our operations desk is available round-the-clock to resolve coordinator portal conflicts and assist with client onboarding.</p>
+            <ul style="list-style: none; padding-top: 0.5rem;">
+              <li style="margin-bottom: 0.5rem;"><strong>Emergency Hotline:</strong> +91 1800 102 123</li>
+              <li><strong>Coordinator Support:</strong> helpdesk@assisterly.com</li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </section>
+
     <!-- Logout / Session Status Section -->
     <section id="logout" class="animate-fade-in-up">
       <div class="about-panel hover-lift" style="background-color: var(--color-sand); border: 1px solid rgba(198, 107, 61, 0.2);">
@@ -538,7 +612,10 @@
   <footer>
     <div class="container">
       <p>&copy; 2026 Assisterly. All rights reserved.</p>
-      <p>Designed by Varun — 23IT721, Full Stack Development Laboratory</p>
+      <p>Designed by <strong>Varun</strong> (Roll No: 23IT721) for the <strong>Full Stack Development Laboratory</strong>, Department of Information Technology, Coimbatore Institute of Technology.</p>
+      <p style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--color-sage);">
+        Contact Support: <a href="mailto:support@assisterly.com" style="color: var(--color-terracotta); text-decoration: none;">support@assisterly.com</a> | Toll-Free: <a href="tel:+911800102123" style="color: var(--color-terracotta); text-decoration: none;">+91 1800 102 123</a>
+      </p>
       
       <!-- Footer Social Icons -->
       <div style="margin-top: 1rem; display: flex; justify-content: center; gap: 1.25rem;">
