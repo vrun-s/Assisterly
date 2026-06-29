@@ -494,15 +494,28 @@ function initFormValidation() {
     const isNotesValid = validateNotes();
 
     if (isNameValid && isEmailValid && isPhoneValid && isAgeValid && isPasswordValid && isDOBValid && isTimeValid && isAddressValid && isNotesValid) {
-      alert('Registration Successful! Caregiver background screening workflow has been queued.');
-      form.reset();
-      if (notesInput) notesInput.textContent = '';
-      if (hiddenNotes) hiddenNotes.value = '';
-      
-      // Clear visual status indicators
-      document.querySelectorAll('.form-group').forEach(group => {
-        group.classList.remove('has-success', 'has-error');
-      });
+      // Gather checked skills
+      const skillsChecked = Array.from(document.querySelectorAll('input[name="skills"]:checked')).map(cb => cb.value);
+
+      // Pack details object
+      const caregiverData = {
+        fullName: nameInput.value.trim(),
+        email: emailInput.value.trim(),
+        phone: phoneInput.value.trim(),
+        age: ageInput.value.trim(),
+        dob: dobInput.value,
+        preferredTime: timeInput.value,
+        gender: document.querySelector('input[name="gender"]:checked')?.value || '',
+        address: addressInput.value.trim(),
+        skills: skillsChecked,
+        additionalNotes: notesInput.textContent.trim()
+      };
+
+      // Store in localStorage
+      localStorage.setItem('registeredCaregiver', JSON.stringify(caregiverData));
+
+      alert('Registration Successful! Redirecting to confirmation profile summary...');
+      window.location.href = 'details.html';
     } else {
       // Focus on the first invalid field
       const firstErr = document.querySelector('.form-group.has-error input, .form-group.has-error textarea, .form-group.has-error [contenteditable]');
